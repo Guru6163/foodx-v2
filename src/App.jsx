@@ -6,13 +6,13 @@ import {
 } from 'react-router-dom';
 import './css/style.css';
 import './charts/ChartjsConfig';
-
 import Dashboard from './pages/Dashboard';
 import Orders from './pages/Orders';
 import Layout from './layout/Layout';
 import Restuarants from './pages/Restuarants';
 import Users from './pages/Users';
 import DeliveryPartners from './pages/DeliveryPartners';
+import SignIn from './pages/SignIn';
 function App() {
 
   const location = useLocation();
@@ -31,6 +31,7 @@ function App() {
         <Route path="restuarants" element={<Restuarants />} />
         <Route path="users" element={<Users />} />
         <Route path="delivery-partners" element={<DeliveryPartners />} />
+        <Route path="signin" element={<SignIn />} />
       </Route>
     </Routes>
 
