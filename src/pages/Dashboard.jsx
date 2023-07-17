@@ -19,7 +19,7 @@ import DashboardCard10 from '../partials/dashboard/DashboardCard10';
 import DashboardCard11 from '../partials/dashboard/DashboardCard11';
 import DashboardCard12 from '../partials/dashboard/DashboardCard12';
 import DashboardCard13 from '../partials/dashboard/DashboardCard13';
-
+import Banner from '../partials/Banner';
 
 function Dashboard() {
 
@@ -27,7 +27,6 @@ function Dashboard() {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         <main>
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
@@ -60,11 +59,11 @@ function Dashboard() {
             {/* Cards */}
             <div className="grid grid-cols-12 gap-6">
 
-              {/* Line chart (FoodX Plus) */}
+              {/* Line chart (Acme Plus) */}
               <DashboardCard01 />
-              {/* Line chart (FoodX Advanced) */}
+              {/* Line chart (Acme Advanced) */}
               <DashboardCard02 />
-              {/* Line chart (FoodX Professional) */}
+              {/* Line chart (Acme Professional) */}
               <DashboardCard03 />
               {/* Bar chart (Direct vs Indirect) */}
               <DashboardCard04 />
@@ -91,6 +90,8 @@ function Dashboard() {
 
           </div>
         </main>
+
+
       </div>
     </div>
   );
