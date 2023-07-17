@@ -41,13 +41,6 @@ function DashboardCard05() {
 
   const [slicedLabels, setSlicedLabels] = useState(generateDates().slice(0, range).reverse());
 
-  // Fake update every 2 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCounter(counter + 1);
-    }, 2000);
-    return () => clearInterval(interval)
-  }, [counter]);
 
   // Loop through data array and update
   useEffect(() => {

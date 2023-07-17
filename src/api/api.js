@@ -177,3 +177,165 @@ export const deleteUser = async (userId) => {
     throw error;
   }
 };
+
+
+// Create a delivery partner
+export const createDeliveryPartner = async (deliveryPartnerData) => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.post('/api/delivery-partners', deliveryPartnerData, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating delivery partner:', error);
+    throw error;
+  }
+};
+
+// Read all delivery partners
+export const getAllDeliveryPartners = async () => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.get('/api/delivery-partners', {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching delivery partners:', error);
+    throw error;
+  }
+};
+
+// Read a specific delivery partner
+export const getDeliveryPartnerById = async (deliveryPartnerId) => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.get(`/api/delivery-partners/${deliveryPartnerId}`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching delivery partner:', error);
+    throw error;
+  }
+};
+
+// Update a delivery partner
+export const updateDeliveryPartner = async (deliveryPartnerId, updatedDeliveryPartnerData) => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.put(`/api/delivery-partners/${deliveryPartnerId}`, updatedDeliveryPartnerData, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating delivery partner:', error);
+    throw error;
+  }
+};
+
+// Delete a delivery partner
+export const deleteDeliveryPartner = async (deliveryPartnerId) => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.delete(`/api/delivery-partners/${deliveryPartnerId}`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting delivery partner:', error);
+    throw error;
+  }
+};
+
+
+// Create a restaurant
+export const createRestaurant = async (restaurantData) => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.post('/api/restaurants', restaurantData, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating restaurant:', error);
+    throw error;
+  }
+};
+
+// Read all restaurants
+export const getAllRestaurants = async () => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.get('/api/restaurants', {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching restaurants:', error);
+    throw error;
+  }
+};
+
+// Read a specific restaurant
+export const getRestaurantById = async (restaurantId) => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.get(`/api/restaurants/${restaurantId}`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching restaurant:', error);
+    throw error;
+  }
+};
+
+// Update a restaurant
+export const updateRestaurant = async (restaurantId, updatedRestaurantData) => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.put(`/api/restaurants/${restaurantId}`, updatedRestaurantData, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating restaurant:', error);
+    throw error;
+  }
+};
+
+// Delete a restaurant
+export const deleteRestaurant = async (restaurantId) => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.delete(`/api/restaurants/${restaurantId}`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting restaurant:', error);
+    throw error;
+  }
+};
