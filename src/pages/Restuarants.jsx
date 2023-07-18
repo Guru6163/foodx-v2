@@ -5,15 +5,16 @@ import { useNavigate } from 'react-router-dom';
 
 function Restaurants() {
   const [restaurants, setRestaurants] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Added loading state
   const navigate = useNavigate();
 
   useEffect(() => {
     getAllRestaurants()
       .then((res) => {
-        console.log(res);
         setRestaurants(res?.data?.restaurants);
       })
-      .catch(() => setRestaurants([]));
+      .catch(() => setRestaurants([]))
+      .finally(() => setIsLoading(false)); // Set loading state to false
   }, []);
 
   const columns = [
@@ -40,9 +41,10 @@ function Restaurants() {
       >
         Add Restaurants
       </button>
-      <GenericTable data={restaurants} columns={columns} title="All Restaurants" />
+      <GenericTable data={restaurants} columns={columns} title="All Restaurants" isLoading={isLoading} navigateTo="update" />
     </div>
   );
 }
 
 export default Restaurants;
+         

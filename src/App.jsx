@@ -29,8 +29,9 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Dashboard />} />
         <Route path="orders" element={<Orders />} />
-        <Route path="restuarants" element={<Restuarants />} />
-        <Route path="restuarants/add" element={<RestaurantForm />} />
+        <Route path="restaurants" element={<Restuarants />} />
+        <Route path="restaurants/add" element={<RestaurantForm />} />
+        <Route path="restaurants/:id" element={<RestaurantForm />} />
         <Route path="users" element={<Users />} />
         <Route path="delivery-partners" element={<DeliveryPartners />} />
         <Route path="signin" element={<SignIn />} />

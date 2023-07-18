@@ -24,7 +24,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     },
     {
       name: "Restaurants",
-      path: "/restuarants",
+      path: "/restaurants",
       icon: <BellIcon className="w-6 h-6" />,
     },
     {

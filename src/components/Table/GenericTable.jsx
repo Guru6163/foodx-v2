@@ -2,7 +2,7 @@ import React from 'react'
 import TableHeader from './TableHeader'
 import TableBody from './TableBody'
 
-function GenericTable({ title, data, columns }) {
+function GenericTable({ title, data, columns, isLoading, navigateTo }) {
     return (
         <div>
             <div className="col-span-full xl:col-span-8 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
@@ -13,7 +13,7 @@ function GenericTable({ title, data, columns }) {
                     <div className="overflow-x-auto">
                         <table className="table-auto w-full dark:text-slate-300">
                             <TableHeader columns={columns} />
-                            <TableBody data={data} columns={columns} />
+                            <TableBody isLoading={isLoading} data={data} columns={columns} navigateTo={navigateTo} />
                         </table>
                     </div>
                 </div>

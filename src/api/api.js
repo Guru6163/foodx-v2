@@ -70,7 +70,7 @@ export const getOrderById = async (orderId) => {
 export const updateOrder = async (orderId, updatedOrderData) => {
   try {
     const authToken = getAuthToken();
-    const response = await axios.put(`/api/orders/${orderId}`, updatedOrderData, {
+    const response = await axios.patch(`/api/orders/${orderId}`, updatedOrderData, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
@@ -150,7 +150,7 @@ export const getUserById = async (userId) => {
 export const updateUser = async (userId, updatedUserData) => {
   try {
     const authToken = getAuthToken();
-    const response = await axios.put(`/api/users/${userId}`, updatedUserData, {
+    const response = await axios.patch(`/api/users/${userId}`, updatedUserData, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
@@ -231,7 +231,7 @@ export const getDeliveryPartnerById = async (deliveryPartnerId) => {
 export const updateDeliveryPartner = async (deliveryPartnerId, updatedDeliveryPartnerData) => {
   try {
     const authToken = getAuthToken();
-    const response = await axios.put(`/api/delivery-partners/${deliveryPartnerId}`, updatedDeliveryPartnerData, {
+    const response = await axios.patch(`/api/delivery-partners/${deliveryPartnerId}`, updatedDeliveryPartnerData, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
@@ -312,7 +312,7 @@ export const getRestaurantById = async (restaurantId) => {
 export const updateRestaurant = async (restaurantId, updatedRestaurantData) => {
   try {
     const authToken = getAuthToken();
-    const response = await axios.put(`/api/restaurants/${restaurantId}`, updatedRestaurantData, {
+    const response = await axios.patch(`/api/restaurants/${restaurantId}`, updatedRestaurantData, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
