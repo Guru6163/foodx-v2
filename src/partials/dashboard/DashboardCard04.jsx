@@ -11,19 +11,23 @@ function DashboardCard04() {
       try {
         const response = await getPaymentMethodAnalytics();
         setData(response?.data);
-        console.log("DB",response.data)
+        console.log("DB", response.data)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-    
+
   }, []);
 
   if (!data) {
     // Render a loading state while data is being fetched
-    return <div>Loading...</div>;
+    return <div className='flex flex-col col-span-full sm:col-span-6 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700'>
+      <div className='my-auto text-black font-bold p-2 text-center items-center'>
+        Loading Data....
+      </div>
+    </div>;
   }
 
   const chartData = {
