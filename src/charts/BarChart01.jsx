@@ -26,6 +26,7 @@ function BarChart01({
   const { textColor, gridColor, tooltipBodyColor, tooltipBgColor, tooltipBorderColor } = chartColors;
 
   useEffect(() => {
+    console.log(data)
     const ctx = canvas.current;
     // eslint-disable-next-line no-unused-vars
     const newChart = new Chart(ctx, {
@@ -57,8 +58,8 @@ function BarChart01({
           x: {
             type: 'time',
             time: {
-              parser: 'MM-DD-YYYY',
-              unit: 'month',
+              parser: 'DD-MM-YYYY', // Update the date format here
+              unit: 'day', // Use 'day' for daily data
               displayFormats: {
                 month: 'MMM YY',
               },

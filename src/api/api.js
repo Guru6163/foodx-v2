@@ -389,3 +389,19 @@ export const getSalesCount = async () => {
     throw error;
   }
 };
+
+
+export const getPaymentMethodAnalytics = async () => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.get(`/api/users/get-paymentMethod-data`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error Fetching:', error);
+    throw error;
+  }
+};

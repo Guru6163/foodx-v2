@@ -11,7 +11,6 @@ function DashboardCard02() {
     const fetchTotalCustomers = async () => {
       try {
         const response = await getOrdersCount();
-        console.log(response)
         const totalOrdersCount = response.totalOrders;
         setOrdersCount(totalOrdersCount);
       } catch (error) {

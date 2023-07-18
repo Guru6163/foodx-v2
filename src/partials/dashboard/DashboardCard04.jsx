@@ -1,34 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import BarChart from '../../charts/BarChart01';
-
-// Import utilities
 import { tailwindConfig } from '../../utils/Utils';
+import { getPaymentMethodAnalytics } from '../../api/api';
 
 function DashboardCard04() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getPaymentMethodAnalytics();
+        setData(response?.data);
+        console.log("DB",response.data)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+    
+  }, []);
+
+  if (!data) {
+    // Render a loading state while data is being fetched
+    return <div>Loading...</div>;
+  }
 
   const chartData = {
-    labels: [
-      '12-01-2020', '01-01-2021', '02-01-2021',
-      '03-01-2021', '04-01-2021', '05-01-2021',
-    ],
+    labels: data.labels,
     datasets: [
-      // Light blue bars
       {
-        label: 'Direct',
-        data: [
-          800, 1600, 900, 1300, 1950, 1700,
-        ],
+        label: 'Cash On Delivery',
+        data: data.cashOnDelivery.data,
         backgroundColor: tailwindConfig().theme.colors.blue[400],
         hoverBackgroundColor: tailwindConfig().theme.colors.blue[500],
         barPercentage: 0.66,
         categoryPercentage: 0.66,
       },
-      // Blue bars
       {
-        label: 'Indirect',
-        data: [
-          4900, 2600, 5350, 4800, 5200, 4800,
-        ],
+        label: 'Online Payment',
+        data: data.onlinePaymentData.data,
         backgroundColor: tailwindConfig().theme.colors.indigo[500],
         hoverBackgroundColor: tailwindConfig().theme.colors.indigo[600],
         barPercentage: 0.66,
