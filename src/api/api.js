@@ -339,3 +339,53 @@ export const deleteRestaurant = async (restaurantId) => {
     throw error;
   }
 };
+
+
+
+
+
+
+export const getOrdersCount = async () => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.get(`/api/users/get-orders-count`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error Fetching:', error);
+    throw error;
+  }
+};
+
+export const getCustomersCount = async () => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.get(`/api/users/get-users-count`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error Fetching:', error);
+    throw error;
+  }
+};
+
+export const getSalesCount = async () => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.get(`/api/users/get-order-sales`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error Fetching:', error);
+    throw error;
+  }
+};
