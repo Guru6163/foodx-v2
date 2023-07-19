@@ -3,6 +3,7 @@ import { createRestaurant, getRestaurantById, deleteRestaurant, updateRestaurant
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import Map from '../Maps/Map';
 
 
 function CreateRestaurantForm() {
@@ -13,7 +14,6 @@ function CreateRestaurantForm() {
     const [creating, setCreating] = useState(false);
     const [updating, setUpdating] = useState(false);
 
-
     const [formData, setFormData] = useState({
         name: '',
         address: '',
@@ -22,12 +22,20 @@ function CreateRestaurantForm() {
         minDeliveryTime: '',
         maxDeliveryTime: '',
         imageUrl: '',
-        lat: '',
-        lng: '',
+        lat: "",
+        lng: "",
     });
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleMarkerPositionChange = (newPosition) => {
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            lat: newPosition.lat,
+            lng: newPosition.lng
+        }));
     };
 
 
@@ -161,9 +169,9 @@ function CreateRestaurantForm() {
             <ToastContainer />
             <div className=" w-full bg-white shadow-lg rounded-sm px-8 py-6">
                 <h2 className="text-lg font-bold mb-4 ">Create a Restaurant</h2>
-                <form onSubmit={id ? handleUpdate : handleCreate} className="grid grid-cols-2 gap-6">
+                <form onSubmit={id ? handleUpdate : handleCreate} className="grid grid-cols-2 gap-3">
                     <div>
-                        <label htmlFor="name" className="block font-semibold mb-2 text-gray-800">
+                        <label htmlFor="name" className="block font-semibold mb-1 text-gray-800">
                             Name
                         </label>
                         <input
@@ -177,7 +185,7 @@ function CreateRestaurantForm() {
                         />
                     </div>
                     <div>
-                        <label htmlFor="address" className="block font-semibold mb-2 text-gray-800">
+                        <label htmlFor="address" className="block font-semibold mb-1 text-gray-800">
                             Address
                         </label>
                         <input
@@ -191,7 +199,7 @@ function CreateRestaurantForm() {
                         />
                     </div>
                     <div>
-                        <label htmlFor="phoneNumber" className="block font-semibold mb-2 text-gray-800">
+                        <label htmlFor="phoneNumber" className="block font-semibold mb-1 text-gray-800">
                             Phone Number
                         </label>
                         <input
@@ -205,7 +213,7 @@ function CreateRestaurantForm() {
                         />
                     </div>
                     <div>
-                        <label htmlFor="category" className="block font-semibold mb-2 text-gray-800">
+                        <label htmlFor="category" className="block font-semibold mb-1 text-gray-800">
                             Category
                         </label>
                         <input
@@ -219,7 +227,7 @@ function CreateRestaurantForm() {
                         />
                     </div>
                     <div>
-                        <label htmlFor="minDeliveryTime" className="block font-semibold mb-2 text-gray-800">
+                        <label htmlFor="minDeliveryTime" className="block font-semibold mb-1 text-gray-800">
                             Min Delivery Time
                         </label>
                         <input
@@ -233,7 +241,7 @@ function CreateRestaurantForm() {
                         />
                     </div>
                     <div>
-                        <label htmlFor="maxDeliveryTime" className="block font-semibold mb-2 text-gray-800">
+                        <label htmlFor="maxDeliveryTime" className="block font-semibold mb-1 text-gray-800">
                             Max Delivery Time
                         </label>
                         <input
@@ -247,7 +255,7 @@ function CreateRestaurantForm() {
                         />
                     </div>
                     <div>
-                        <label htmlFor="imageUrl" className="block font-semibold mb-2 text-gray-800">
+                        <label htmlFor="imageUrl" className="block font-semibold mb-1 text-gray-800">
                             Image URL
                         </label>
                         <input
@@ -260,7 +268,7 @@ function CreateRestaurantForm() {
                         />
                     </div>
                     <div>
-                        <label htmlFor="lat" className="block font-semibold mb-2 text-gray-800">
+                        <label htmlFor="lat" className="block font-semibold mb-1 text-gray-800">
                             Latitude
                         </label>
                         <input
@@ -273,7 +281,7 @@ function CreateRestaurantForm() {
                         />
                     </div>
                     <div>
-                        <label htmlFor="lng" className="block font-semibold mb-2 text-gray-800">
+                        <label htmlFor="lng" className="block font-semibold mb-1 text-gray-800">
                             Longitude
                         </label>
                         <input
@@ -311,7 +319,12 @@ function CreateRestaurantForm() {
                         </button>
                     )}
                 </div>
+                <div className='mt-3 border-2 shadow-lg'>
+                    <Map onMarkerPositionChange={handleMarkerPositionChange} initialPosition={{ lat: parseFloat(formData.lat), lng: parseFloat(formData.lng) }}  />
+                </div>
+
             </div>
+
         </div>
     );
 }
