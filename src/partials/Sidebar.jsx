@@ -42,7 +42,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
       >
         <div className="space-y-8">
           <div>
-            <h3 id="title" className="text-xs text-white flex flex-col items-center justify-center font-semibold ">
+            <h3 id="title" className="text-xs text-white flex flex-col items-center justify-center font-bold ">
               <span className="text-xl">
                 FoodStack
               </span>
@@ -56,7 +56,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   key={index}
                   to={item.path}
                   className={`flex items-center block text-slate-200 truncate transition duration-150 m-1 rounded-sm p-2 ${pathname === item.path || pathname.includes("dashboard")
-                    ? "bg-blue-900 hover:bg-blue-800"
+                    ? "bg-blue-700 hover:bg-blue-600"
                     : "hover:bg-gray-700"
                     }`}
                 >
@@ -64,7 +64,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                     <span className="flex-shrink-0 text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                       {item.icon}
                     </span>
-                    <span className="ml-2">{item.name}</span>
+                    <span className="ml-2 font-semibold">{item.name}</span>
                   </div>
                 </NavLink>
               ))}
