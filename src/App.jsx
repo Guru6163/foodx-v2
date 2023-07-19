@@ -16,6 +16,7 @@ import SignIn from './pages/SignIn';
 import RestaurantForm from './components/Restauarant/RestaurantForm';
 import DeliveryPartnerForm from './components/DeliveryPartners/DeliveryPartnerForm';
 import UserForm from './components/Users/UserForm';
+import OrderForm from './components/Orders/OrderForm';
 function App() {
 
   const location = useLocation();
@@ -31,6 +32,8 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Dashboard />} />
         <Route path="orders" element={<Orders />} />
+        <Route path="orders/add" element={<OrderForm />} />
+        <Route path="orders/:id" element={<OrderForm />} />
         <Route path="restaurants" element={<Restuarants />} />
         <Route path="restaurants/add" element={<RestaurantForm />} />
         <Route path="restaurants/:id" element={<RestaurantForm />} />
