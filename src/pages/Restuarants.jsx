@@ -42,6 +42,7 @@ function Restaurants() {
         Add Restaurants
       </button>
       <GenericTable data={restaurants} columns={columns} title="All Restaurants" isLoading={isLoading} navigateTo="update" />
+      
     </div>
   );
 }

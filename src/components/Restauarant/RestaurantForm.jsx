@@ -4,6 +4,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import Map from '../Maps/Map';
+import AddMenuItem from './AddMenuItem';
 
 
 function CreateRestaurantForm() {
@@ -13,7 +14,6 @@ function CreateRestaurantForm() {
     const [deleting, setDeleting] = useState(false);
     const [creating, setCreating] = useState(false);
     const [updating, setUpdating] = useState(false);
-
     const [formData, setFormData] = useState({
         name: '',
         address: '',
@@ -22,10 +22,10 @@ function CreateRestaurantForm() {
         minDeliveryTime: '',
         maxDeliveryTime: '',
         imageUrl: '',
-        lat: "",
-        lng: "",
+        lat: 0,
+        lng: 0,
     });
-
+    
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -109,6 +109,7 @@ function CreateRestaurantForm() {
             getRestaurantById(id)
                 .then((response) => {
                     const restaurant = response?.data?.restaurant;
+                    console.log(restaurant)
                     if (restaurant) {
                         setFormData(restaurant);
                     }
@@ -165,165 +166,168 @@ function CreateRestaurantForm() {
 
 
     return (
-        <div className=" bg-gray-100 flex items-center justify-center">
+        <div className=" bg-gray-100 flex flex-col items-center justify-center ">
             <ToastContainer />
-            <div className=" w-full bg-white shadow-lg rounded-sm px-8 py-6">
-                <h2 className="text-lg font-bold mb-4 ">Create a Restaurant</h2>
-                <form onSubmit={id ? handleUpdate : handleCreate} className="grid grid-cols-2 gap-3">
-                    <div>
-                        <label htmlFor="name" className="block font-semibold mb-1 text-gray-800">
-                            Name
-                        </label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="address" className="block font-semibold mb-1 text-gray-800">
-                            Address
-                        </label>
-                        <input
-                            type="text"
-                            id="address"
-                            name="address"
-                            value={formData.address}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="phoneNumber" className="block font-semibold mb-1 text-gray-800">
-                            Phone Number
-                        </label>
-                        <input
-                            type="text"
-                            id="phoneNumber"
-                            name="phoneNumber"
-                            value={formData.phoneNumber}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="category" className="block font-semibold mb-1 text-gray-800">
-                            Category
-                        </label>
-                        <input
-                            type="text"
-                            id="category"
-                            name="category"
-                            value={formData.category}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="minDeliveryTime" className="block font-semibold mb-1 text-gray-800">
-                            Min Delivery Time
-                        </label>
-                        <input
-                            type="text"
-                            id="minDeliveryTime"
-                            name="minDeliveryTime"
-                            value={formData.minDeliveryTime}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="maxDeliveryTime" className="block font-semibold mb-1 text-gray-800">
-                            Max Delivery Time
-                        </label>
-                        <input
-                            type="text"
-                            id="maxDeliveryTime"
-                            name="maxDeliveryTime"
-                            value={formData.maxDeliveryTime}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="imageUrl" className="block font-semibold mb-1 text-gray-800">
-                            Image URL
-                        </label>
-                        <input
-                            type="text"
-                            id="imageUrl"
-                            name="imageUrl"
-                            value={formData.imageUrl}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="lat" className="block font-semibold mb-1 text-gray-800">
-                            Latitude
-                        </label>
-                        <input
-                            type="text"
-                            id="lat"
-                            name="lat"
-                            value={formData.lat}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="lng" className="block font-semibold mb-1 text-gray-800">
-                            Longitude
-                        </label>
-                        <input
-                            type="text"
-                            id="lng"
-                            name="lng"
-                            value={formData.lng}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
-                        />
-                    </div>
-                </form>
-                <div>
-                    {id ? (
+            <div className=" w-full bg-white shadow-lg rounded-sm px-8 py-6 grid grid-cols-5 gap-3">
+                <div className='col-span-3'>
+                    <h2 className="text-lg font-bold mb-4 ">Create a Restaurant</h2>
+                    <form onSubmit={id ? handleUpdate : handleCreate} className="grid grid-cols-2 gap-3">
                         <div>
-                            <button
-                                onClick={handleUpdate}
-                                className="bg-blue-500 text-white py-1 px-6 rounded-sm hover:bg-blue-600 mt-3 mr-2"
-                            >
-                                Update
-                            </button>
-                            <button
-                                onClick={handleDelete}
-                                className="bg-red-500 text-white py-1 px-6 rounded-sm hover:bg-red-600 mt-3"
-                            >
-                                {deleting ? 'Deleting...' : 'Delete'}
-                            </button>
+                            <label htmlFor="name" className="block font-semibold mb-1 text-gray-800">
+                                Name
+                            </label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
+                                required
+                            />
                         </div>
-                    ) : (
-                        <button
-                            onClick={handleCreate}
-                            className="bg-blue-500 text-white py-1 px-6 rounded-sm hover:bg-blue-600 mt-3"
-                        >
-                            Create Restaurant
-                        </button>
-                    )}
+                        <div>
+                            <label htmlFor="address" className="block font-semibold mb-1 text-gray-800">
+                                Address
+                            </label>
+                            <input
+                                type="text"
+                                id="address"
+                                name="address"
+                                value={formData.address}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="phoneNumber" className="block font-semibold mb-1 text-gray-800">
+                                Phone Number
+                            </label>
+                            <input
+                                type="text"
+                                id="phoneNumber"
+                                name="phoneNumber"
+                                value={formData.phoneNumber}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="category" className="block font-semibold mb-1 text-gray-800">
+                                Category
+                            </label>
+                            <input
+                                type="text"
+                                id="category"
+                                name="category"
+                                value={formData.category}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="minDeliveryTime" className="block font-semibold mb-1 text-gray-800">
+                                Min Delivery Time
+                            </label>
+                            <input
+                                type="text"
+                                id="minDeliveryTime"
+                                name="minDeliveryTime"
+                                value={formData.minDeliveryTime}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="maxDeliveryTime" className="block font-semibold mb-1 text-gray-800">
+                                Max Delivery Time
+                            </label>
+                            <input
+                                type="text"
+                                id="maxDeliveryTime"
+                                name="maxDeliveryTime"
+                                value={formData.maxDeliveryTime}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="imageUrl" className="block font-semibold mb-1 text-gray-800">
+                                Image URL
+                            </label>
+                            <input
+                                type="text"
+                                id="imageUrl"
+                                name="imageUrl"
+                                value={formData.imageUrl}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="lat" className="block font-semibold mb-1 text-gray-800">
+                                Latitude
+                            </label>
+                            <input
+                                type="text"
+                                id="lat"
+                                name="lat"
+                                value={formData.lat}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="lng" className="block font-semibold mb-1 text-gray-800">
+                                Longitude
+                            </label>
+                            <input
+                                type="text"
+                                id="lng"
+                                name="lng"
+                                value={formData.lng}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
+                            />
+                        </div>
+                    </form>
+                    <div>
+                        {id ? (
+                            <div>
+                                <button
+                                    onClick={handleUpdate}
+                                    className="bg-blue-500 text-white py-1 px-6 rounded-sm hover:bg-blue-600 mt-3 mr-2"
+                                >
+                                    Update
+                                </button>
+                                <button
+                                    onClick={handleDelete}
+                                    className="bg-red-500 text-white py-1 px-6 rounded-sm hover:bg-red-600 mt-3"
+                                >
+                                    {deleting ? 'Deleting...' : 'Delete'}
+                                </button>
+                            </div>
+                        ) : (
+                            <button
+                                onClick={handleCreate}
+                                className="bg-blue-500 text-white py-1 px-6 rounded-sm hover:bg-blue-600 mt-3"
+                            >
+                                Create Restaurant
+                            </button>
+                        )}
+                    </div>
                 </div>
-                <div className='mt-3 border-2 shadow-lg'>
-                    <Map onMarkerPositionChange={handleMarkerPositionChange} initialPosition={{ lat: parseFloat(formData.lat), lng: parseFloat(formData.lng) }}  />
+                <div className='mt-3 border-2 shadow-lg col-span-2'>
+                    <Map onMarkerPositionChange={handleMarkerPositionChange} initialPosition={{lat:parseFloat(formData.lat),lng:parseFloat(formData.lng)}} />
                 </div>
 
             </div>
+           
 
         </div>
     );

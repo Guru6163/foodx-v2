@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 const containerStyle = {
@@ -6,28 +6,44 @@ const containerStyle = {
     height: '400px'
 };
 
-const center = { lat: 12.668109, lng: 79.282176 }
+const defaultCenter = { lat: 12.668109, lng: 79.282176 };
 
 function Map({ onMarkerPositionChange, initialPosition }) {
-    console.log(initialPosition)
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: "YOUR_API_KEY"
-    })
+    });
 
     const [map, setMap] = useState(null);
-    const [markerPosition, setMarkerPosition] = useState(initialPosition || center);
+    const [center, setCenter] = useState(
+        initialPosition && initialPosition.lat !== 0 && initialPosition.lng !== 0
+            ? initialPosition
+            : defaultCenter
+    );
+    const [markerPosition, setMarkerPosition] = useState(
+        initialPosition && initialPosition.lat !== 0 && initialPosition.lng !== 0
+            ? initialPosition
+            : defaultCenter
+    );
+
+    useEffect(() => {
+        if (
+            initialPosition &&
+            initialPosition.lat !== 0 &&
+            initialPosition.lng !== 0
+        ) {
+            setCenter(initialPosition);
+            setMarkerPosition(initialPosition);
+        }
+    }, [initialPosition]);
 
     const onLoad = React.useCallback(function callback(map) {
-        const bounds = new window.google.maps.LatLngBounds(center);
-        map.fitBounds(bounds);
-
-        setMap(map)
-    }, [])
+        setMap(map);
+    }, []);
 
     const onUnmount = React.useCallback(function callback() {
-        setMap(null)
-    }, [])
+        setMap(null);
+    }, []);
 
     const handleMarkerDragEnd = (event) => {
         const newPosition = {
@@ -52,7 +68,7 @@ function Map({ onMarkerPositionChange, initialPosition }) {
                 onDragEnd={handleMarkerDragEnd}
             />
         </GoogleMap>
-    ) : <></>
+    ) : <></>;
 }
 
 export default React.memo(Map);
