@@ -6,6 +6,8 @@ import {
 } from 'react-router-dom';
 import './css/style.css';
 import './charts/ChartjsConfig';
+import "primereact/resources/themes/lara-light-indigo/theme.css";     
+import "primereact/resources/primereact.min.css";                                          
 import Dashboard from './pages/Dashboard';
 import Orders from './pages/Orders';
 import Layout from './layout/Layout';

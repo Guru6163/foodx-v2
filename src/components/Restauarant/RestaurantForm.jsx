@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { createRestaurant, getRestaurantById, deleteRestaurant, updateRestaurant } from '../../api/api';
+import { createRestaurant, getRestaurantById, deleteRestaurant, updateRestaurant, createMenuItems } from '../../api/api';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import Map from '../Maps/Map';
-import AddMenuItem from './AddMenuItem';
+import MenuModal from './AddMenuItem'; // Import the MenuModal component
+import MenuItemsTable from './MenuItemsTable';
 
 
 function CreateRestaurantForm() {
@@ -14,6 +15,8 @@ function CreateRestaurantForm() {
     const [deleting, setDeleting] = useState(false);
     const [creating, setCreating] = useState(false);
     const [updating, setUpdating] = useState(false);
+    const [menuModalVisible, setMenuModalVisible] = useState(false);
+    const [ onChange,setOnChange] = useState(false)
     const [formData, setFormData] = useState({
         name: '',
         address: '',
@@ -25,7 +28,7 @@ function CreateRestaurantForm() {
         lat: 0,
         lng: 0,
     });
-    
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -37,6 +40,24 @@ function CreateRestaurantForm() {
             lng: newPosition.lng
         }));
     };
+
+    const handleAddMenuItem = (menuItemData) => {
+        // You can add the logic to save the menu item data to the backend here
+        console.log('Menu item data:', menuItemData);
+        const data = { ...menuItemData, restaurantId: id }
+        createMenuItems(data).then(res => {
+            toast.success('MenuItem added successfully!');
+            setMenuModalVisible(false)
+            setOnChange(!onChange)
+        }).catch((error) => {
+            console.error('Error creating Menu:', error);
+            toast.error('Error creating Menu. Please try again.');
+        })
+            .finally(() => {
+                setMenuModalVisible(false)
+            });
+    };
+
 
 
     const handleCreate = (e) => {
@@ -295,13 +316,20 @@ function CreateRestaurantForm() {
                                 className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
                             />
                         </div>
+                        {menuModalVisible && (
+                            <MenuModal
+                                visible={menuModalVisible}
+                                onHide={() => setMenuModalVisible(false)}
+                                onSubmit={handleAddMenuItem}
+                            />
+                        )}
                     </form>
                     <div>
                         {id ? (
-                            <div>
+                            <div className='space-x-2'>
                                 <button
                                     onClick={handleUpdate}
-                                    className="bg-blue-500 text-white py-1 px-6 rounded-sm hover:bg-blue-600 mt-3 mr-2"
+                                    className="bg-blue-500 text-white py-1 px-6 rounded-sm hover:bg-blue-600 mt-3 "
                                 >
                                     Update
                                 </button>
@@ -310,6 +338,12 @@ function CreateRestaurantForm() {
                                     className="bg-red-500 text-white py-1 px-6 rounded-sm hover:bg-red-600 mt-3"
                                 >
                                     {deleting ? 'Deleting...' : 'Delete'}
+                                </button>
+                                <button
+                                    onClick={() => setMenuModalVisible(true)}
+                                    className="bg-emerald-500 text-white py-1 px-6 rounded-sm hover:bg-emerald-600 mt-3"
+                                >
+                                    Add Menu
                                 </button>
                             </div>
                         ) : (
@@ -323,12 +357,14 @@ function CreateRestaurantForm() {
                     </div>
                 </div>
                 <div className='mt-3 border-2 shadow-lg col-span-2'>
-                    <Map onMarkerPositionChange={handleMarkerPositionChange} initialPosition={{lat:parseFloat(formData.lat),lng:parseFloat(formData.lng)}} />
+                    <Map onMarkerPositionChange={handleMarkerPositionChange} initialPosition={{ lat: parseFloat(formData.lat), lng: parseFloat(formData.lng) }} />
                 </div>
+                <div className="col-span-5">
+                {id && <MenuItemsTable  change={onChange} id={id} />}
+                </div>
+                
 
             </div>
-           
-
         </div>
     );
 }

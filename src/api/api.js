@@ -340,6 +340,85 @@ export const deleteRestaurant = async (restaurantId) => {
   }
 };
 
+export const createMenuItems = async (restaurantData) => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.post('/api/menu', restaurantData, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating restaurant:', error);
+    throw error;
+  }
+};
+
+// Read all restaurants
+export const getMenuItemsByRestauarantId = async (restaurantId) => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.post('/api/menu/getAll',{restaurantId}, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching restaurants:', error);
+    throw error;
+  }
+};
+
+// Read a specific restaurant
+export const getMenuDetailsById = async (menuId) => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.get(`/api/restaurants/${menuId}`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching restaurant:', error);
+    throw error;
+  }
+};
+
+// Update a restaurant
+export const updateMenuById = async (menuId, updatedRestaurantData) => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.patch(`/api/restaurants/${menuId}`, updatedRestaurantData, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating restaurant:', error);
+    throw error;
+  }
+};
+
+// Delete a restaurant
+export const deleteMenuById = async (menuId) => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.delete(`/api/restaurants/${menuId}`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting restaurant:', error);
+    throw error;
+  }
+};
+
 
 
 
