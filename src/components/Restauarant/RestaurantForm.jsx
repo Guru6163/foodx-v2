@@ -360,7 +360,7 @@ function CreateRestaurantForm() {
                     <Map onMarkerPositionChange={handleMarkerPositionChange} initialPosition={{ lat: parseFloat(formData.lat), lng: parseFloat(formData.lng) }} />
                 </div>
                 <div className="col-span-5">
-                {id && <MenuItemsTable  change={onChange} id={id} />}
+                {id && <MenuItemsTable setChange={setCreating}  change={onChange} id={id} />}
                 </div>
                 
 

@@ -43,7 +43,7 @@ function Restaurants() {
       >
         Add Restaurants
       </button>
-      <DataTable size='small' value={restaurants} showGridlines tableStyle={{ minWidth: '50rem' }}>
+      <DataTable rowHover onRowClick={(e)=>navigate(e.data._id)} size='small' value={restaurants} showGridlines tableStyle={{ minWidth: '50rem' }}>
         <Column field="name" header="Name"></Column>
         <Column field="address" header="Location"></Column>
         <Column field="category" header="Category"></Column>
