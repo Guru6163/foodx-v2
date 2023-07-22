@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { getAllDeliveryPartners } from '../api/api';
 import GenericTable from '../components/Table/GenericTable';
 import { useNavigate } from 'react-router-dom';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+
 
 function DeliveryPartners() {
   const navigate = useNavigate();
@@ -18,20 +21,11 @@ function DeliveryPartners() {
       .finally(() => setIsLoading(false));
   }, []);
 
-  const columns = [
-    { key: 'name', header: 'Name' },
-    { key: 'email', header: 'Email' },
-    { key: 'phoneNumber', header: 'Phone Number' },
-    { key: 'address', header: 'Address' },
-    { key: 'available', header: 'Availability', className: 'capitalize' },
-  ];
 
   if (isLoading) {
     return (
-      <div className="bg-gray-100 flex items-center justify-center">
-        <div className="w-full bg-white shadow-lg rounded-sm px-8 py-6">
-          <h2 className="text-lg font-bold mb-4">Loading...</h2>
-        </div>
+      <div className="flex justify-center items-center min-h-full">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500"></div>
       </div>
     );
   }
@@ -45,7 +39,12 @@ function DeliveryPartners() {
       >
         Setup New Delivery Partner
       </button>
-      <GenericTable data={deliveryPartners} columns={columns} title="All Delivery Partners" />
+      <DataTable rowHover onRowClick={(e)=>navigate(e.data._id)} size='small' value={deliveryPartners} showGridlines tableStyle={{ minWidth: '50rem' }}>
+        <Column field="name" header="Code"></Column>
+        <Column field="email" header="Name"></Column>
+        <Column field="phoneNumber" header="Category"></Column>
+        <Column field="available" header="Quantity"></Column>
+      </DataTable>
     </div>
   );
 }

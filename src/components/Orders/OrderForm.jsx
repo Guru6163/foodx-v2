@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { createOrder, getOrderById, deleteOrder, updateOrder } from '../../api/api';
+import { createOrder, getOrderById, deleteOrder, updateOrder, getAllUsers, getAllRestaurants, getMenuItemsByRestauarantId ,getAllDeliveryPartners} from '../../api/api';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Dropdown } from 'primereact/dropdown';
 
 function CreateOrderForm() {
   const { id } = useParams();
@@ -11,12 +12,15 @@ function CreateOrderForm() {
   const [deleting, setDeleting] = useState(false);
   const [creating, setCreating] = useState(false);
   const [updating, setUpdating] = useState(false);
-
+  const [allUsers, setAllUsers] = useState([])
+  const [allRestaurants, setALlRestauarants] = useState([])
+  const [AllDeliveryPartners, setAllDeliveryPartners] = useState([])
+  const [allMenuItems, setAllMenuItems] = useState([])
   const [formData, setFormData] = useState({
     user: '',
     restaurant: '',
     deliveryPartner: 'Un-Assigned',
-    items: [],
+    menuItems: [],
     totalAmount: 0,
     deliveryCharge: 0,
     orderStatus: 'Pending',
@@ -27,6 +31,12 @@ function CreateOrderForm() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const handleMenuItemChange = (e) => {
+    const selectedMenuItemIds = e.value.map((menuItem) => menuItem._id);
+    setFormData({ ...formData, menuItems: selectedMenuItemIds });
+  };
+
 
   const handleCreate = (e) => {
     e.preventDefault();
@@ -89,9 +99,13 @@ function CreateOrderForm() {
   };
 
   useEffect(() => {
+    if (!id) {
+      getAllUsers().then(res => setAllUsers(res?.data?.users)).catch(err => console.log(err))
+      getAllRestaurants().then(res => setALlRestauarants(res?.data?.restaurants)).catch(err => console.log(err))
+      getAllDeliveryPartners().then(res => setAllDeliveryPartners(res?.data)).catch(err => console.log(err))
+    }
     if (id) {
       setLoading(true);
-
       getOrderById(id)
         .then((response) => {
           const order = response?.data;
@@ -108,6 +122,10 @@ function CreateOrderForm() {
         });
     }
   }, [id]);
+
+  useEffect(() => {
+    getMenuItemsByRestauarantId(formData.restaurant).then(res => setAllMenuItems(res?.data))
+  }, [formData.restaurant])
 
   if (loading) {
     return (
@@ -151,6 +169,7 @@ function CreateOrderForm() {
 
   return (
     <div className="bg-gray-100 flex items-center justify-center">
+      
       <ToastContainer />
       <div className="w-full bg-white shadow-lg rounded-sm px-8 py-6">
         <h2 className="text-lg font-bold mb-4 ">Create an Order</h2>
@@ -159,57 +178,40 @@ function CreateOrderForm() {
             <label htmlFor="user" className="block font-semibold mb-1 text-gray-800">
               User
             </label>
-            <input
-              type="text"
-              id="user"
-              name="user"
-              value={formData.user}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
-              required
-            />
+            <Dropdown style={{borderRadius:"0"}} value={formData.user} onChange={handleChange} name="user" options={allUsers} optionValue='_id' optionLabel="phoneNumber" placeholder="Select a User"
+              filter className="w-full md:w-14rem custom-dropdown" />
           </div>
           <div>
             <label htmlFor="restaurant" className="block font-semibold mb-1 text-gray-800">
               Restaurant
             </label>
-            <input
-              type="text"
-              id="restaurant"
-              name="restaurant"
-              value={formData.restaurant}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
-              required
-            />
+            <Dropdown style={{borderRadius:"0"}} value={formData.restaurant} onChange={handleChange} name="restaurant" options={allRestaurants} optionValue='_id' optionLabel="name" placeholder="Select a Restaurant"
+              filter className="w-full md:w-14rem custom-dropdown" />
           </div>
           <div>
             <label htmlFor="deliveryPartner" className="block font-semibold mb-1 text-gray-800">
               Delivery Partner
             </label>
-            <input
-              type="text"
-              id="deliveryPartner"
-              name="deliveryPartner"
-              value={formData.deliveryPartner}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
-              required
-            />
+            <Dropdown style={{borderRadius:"0"}} value={formData.deliveryPartner} onChange={handleChange} name="deliveryPartner" options={AllDeliveryPartners} optionValue='_id' optionLabel="name" placeholder="Select a Delivery Partner"
+              filter className="w-full md:w-14rem custom-dropdown" />
           </div>
           <div>
             <label htmlFor="items" className="block font-semibold mb-1 text-gray-800">
               Items
             </label>
-            <input
-              type="text"
-              id="items"
-              name="items"
-              value={formData.items}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
-              required
-            />
+            <Dropdown
+            style={{ borderRadius: "0" }}
+            value={formData.menuItems}
+            onChange={handleMenuItemChange}
+            name="menuItems"
+            options={allMenuItems}
+            optionValue='_id'
+            optionLabel="name"
+            placeholder="Select Menu Items"
+            filter
+            className="w-full md:w-14rem custom-dropdown"
+            multiple // Allow multiple selection
+          />
           </div>
           <div>
             <label htmlFor="totalAmount" className="block font-semibold mb-1 text-gray-800">

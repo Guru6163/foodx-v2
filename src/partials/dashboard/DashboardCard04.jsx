@@ -22,14 +22,15 @@ function DashboardCard04() {
   }, []);
 
   if (!data) {
-    // Render a loading state while data is being fetched
-    return <div className='flex flex-col col-span-full sm:col-span-6 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700'>
-      <div className='my-auto text-black font-bold p-2 text-center items-center'>
-        Loading Data....
+    return (
+      <div className="flex flex-col col-span-full sm:col-span-6 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
+        <div className="my-auto text-black font-bold p-2 flex justify-center items-center">
+          <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500"></div>
+        </div>
       </div>
-    </div>;
+    );
   }
-
+  
   const chartData = {
     labels: data.labels,
     datasets: [

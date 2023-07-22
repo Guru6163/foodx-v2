@@ -13,7 +13,7 @@ function TableBody({ data, columns, isLoading, navigateTo = "/" }) {
       </tbody>
     );
   }
-  console.log(data)
+
   return (
     <tbody className="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
       {data.length > 0 ? (

@@ -28,10 +28,8 @@ function Users() {
 
   if (isLoading) {
     return (
-      <div className="bg-gray-100 flex items-center justify-center">
-        <div className="w-full bg-white shadow-lg rounded-sm px-8 py-6">
-          <h2 className="text-lg font-bold mb-4">Loading...</h2>
-        </div>
+      <div className="flex justify-center items-center min-h-full">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500"></div>
       </div>
     );
   }
