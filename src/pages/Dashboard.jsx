@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import WelcomeBanner from '../partials/dashboard/WelcomeBanner';
 import DashboardAvatars from '../partials/dashboard/DashboardAvatars';
 import FilterButton from '../components/DropdownFilter';
@@ -7,7 +8,7 @@ import DashboardCard01 from '../partials/dashboard/DashboardCard01';
 import DashboardCard02 from '../partials/dashboard/DashboardCard02';
 import DashboardCard03 from '../partials/dashboard/DashboardCard03';
 import DashboardCard04 from '../partials/dashboard/DashboardCard04';
-import DashboardCard06 from '../partials/dashboard/DashboardCard06';
+import DashboardCard06 from '../partials/dashboard/PreferedPaymentMethod';
 import DashboardCard07 from '../partials/dashboard/DashboardCard07';
 import DashboardCard10 from '../partials/dashboard/DashboardCard10';
 

@@ -500,3 +500,18 @@ export const getTop5Customers = async () => {
     throw error;
   }
 };
+
+export const getPreferredPaymentMethod = async () => {
+  try {
+    const authToken = getAuthToken();
+    const response = await axios.get(`/api/orders/paymentMethod`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error Fetching:', error);
+    throw error;
+  }
+};
