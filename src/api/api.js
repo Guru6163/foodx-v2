@@ -375,7 +375,7 @@ export const getMenuItemsByRestauarantId = async (restaurantId) => {
 export const getMenuDetailsById = async (menuId) => {
   try {
     const authToken = getAuthToken();
-    const response = await axios.get(`/api/restaurants/${menuId}`, {
+    const response = await axios.get(`/api/menu/${menuId}`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
@@ -391,7 +391,7 @@ export const getMenuDetailsById = async (menuId) => {
 export const updateMenuById = async (menuId, updatedRestaurantData) => {
   try {
     const authToken = getAuthToken();
-    const response = await axios.patch(`/api/restaurants/${menuId}`, updatedRestaurantData, {
+    const response = await axios.patch(`/api/menu/${menuId}`, updatedRestaurantData, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
@@ -407,7 +407,7 @@ export const updateMenuById = async (menuId, updatedRestaurantData) => {
 export const deleteMenuById = async (menuId) => {
   try {
     const authToken = getAuthToken();
-    const response = await axios.delete(`/api/restaurants/${menuId}`, {
+    const response = await axios.delete(`/api/menu/${menuId}`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },

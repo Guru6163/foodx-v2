@@ -30,8 +30,8 @@ function CreateOrderForm() {
     user: "",
     restaurant: "",
     deliveryPartner: "Un-Assigned",
-    menuItems: [],
-    totalAmount: 0,
+    items: [],
+    amount: 0,
     deliveryCharge: 0,
     orderStatus: "Pending",
     paymentMethod: "",
@@ -39,7 +39,7 @@ function CreateOrderForm() {
   });
   const [showDialog, setShowDialog] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
   const handleAddItemsClick = () => {
     setShowDialog(true);
@@ -48,7 +48,7 @@ function CreateOrderForm() {
   const handleDialogAdd = () => {
     // Add the selected item and quantity to the list of menu items
     const newItem = {
-      itemName:selectedItem.name,
+      itemName: selectedItem.name,
       menuItem: selectedItem._id,
       quantity: quantity,
       // Add any other relevant properties for the item
@@ -56,42 +56,61 @@ function CreateOrderForm() {
 
     setFormData({
       ...formData,
-      menuItems: [...formData.menuItems, newItem],
+      items: [...formData.items, newItem],
+      totalAmount: formData.amount
     });
 
     // Reset the dialog state
     setSelectedItem(null);
-    setQuantity(0);
+    setQuantity(1);
     setShowDialog(false);
   };
 
   const handleDialogCancel = () => {
     setSelectedItem(null);
-    setQuantity(0);
+    setQuantity(1);
     setShowDialog(false);
   };
 
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    const parsedValue = name === "deliveryCharge" ? parseInt(value) : value;
+    setFormData({ ...formData, [name]: parsedValue });
+  };
+  
+
+  const calculateItemPrice = (menuItem, quantity) => {
+    const selectedMenuItem = allMenuItems.find((item) => item._id === menuItem);
+    if (selectedMenuItem) {
+      const perItemPrice = selectedMenuItem.price;
+      const totalItemPrice = perItemPrice * quantity;
+      return { perItemPrice, totalItemPrice };
+    }
+    return { perItemPrice: 0, totalItemPrice: 0 };
   };
 
-  const handleMenuItemChange = (e) => {
-    const selectedMenuItemIds = e.value.map((menuItem) => menuItem._id);
-    setFormData({ ...formData, menuItems: selectedMenuItemIds });
+  const calculateAmount = () => {
+    let totalAmount = 0;
+    for (const item of formData.items) {
+      const itemPrice = calculateItemPrice(item.menuItem, item.quantity).totalItemPrice;
+      totalAmount += itemPrice;
+    }
+    return totalAmount;
   };
+
 
   const handleCreate = (e) => {
     e.preventDefault();
     setCreating(true);
-    createOrder(formData)
+    createOrder({...formData,totalAmount:calculateAmount()})
       .then((response) => {
         console.log("Order created:", response.data);
-        setFormData({});
         toast.success("Order created successfully!");
         setTimeout(() => {
           navigate("/orders");
         }, 1000);
+        setFormData({items:[]});
       })
       .catch((error) => {
         console.error("Error creating order:", error);
@@ -105,7 +124,7 @@ function CreateOrderForm() {
   const handleUpdate = (e) => {
     e.preventDefault();
     setUpdating(true);
-    updateOrder(id, formData)
+    updateOrder(id, {...formData,totalAmount:calculateAmount})
       .then((response) => {
         console.log("Order updated:", response.data);
         toast.success("Order updated successfully!");
@@ -218,9 +237,9 @@ function CreateOrderForm() {
     );
   }
   const handleDeleteItem = (index) => {
-    const updatedMenuItems = [...formData.menuItems];
+    const updatedMenuItems = [...formData.items];
     updatedMenuItems.splice(index, 1);
-    setFormData({ ...formData, menuItems: updatedMenuItems });
+    setFormData({ ...formData, items: updatedMenuItems });
   };
 
   console.log(formData)
@@ -373,28 +392,42 @@ function CreateOrderForm() {
             >
               Payment Method
             </label>
-            <input
-              type="text"
-              id="paymentMethod"
-              name="paymentMethod"
+            <Dropdown
+              style={{
+                borderRadius: "0",
+                margin: "0",
+                padding: "0",
+                height: "35px",
+                lineHeight: "10px",
+              }}
               value={formData.paymentMethod}
               onChange={handleChange}
-              className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
-              required
+              name="paymentMethod"
+              options={["Online Payment", "Cash On Delivery"]}
+              placeholder="Select a Payment Method"
+              className="w-full md:w-14rem custom-dropdown"
             />
           </div>
           <div className="col-span-2 my-2">
             <span onClick={handleAddItemsClick} className="bg-blue-600 p-2 text-white px-5 cursor-pointer">Add Items</span>
           </div>
           <div className="border-2 col-span-2">
-            <div className="grid grid-cols-2">
-              {formData.menuItems.map((item, index) => (
-                <div key={index} className="p-2">
-                  <div className="w-full grid grid-cols-3 gap-2">
-                    <div className="text-center my-auto border-2 border-emerald-500 bg-emerald-100 p-2">{item.itemName}</div>
-                    <div className="text-center my-auto border-2 border-emerald-500 bg-emerald-100 p-2">Qty: {item.quantity}</div>
+            <div>
+              {formData?.items?.map((item, index) => (
+                <div key={index} className="p-2 border-b border-gray-300">
+                  <div className="flex items-center justify-evenly">
+
+                    <div className="text-center my-auto p-2 mr-2"> {index + 1}</div>
+                    <div className="text-center my-auto p-2 mr-2"> {item.itemName}</div>
+                    <div className="text-center my-auto p-2 mr-2">Qty: {item.quantity}</div>
+                    <div className="text-center my-auto p-2 mr-2">
+                      Per Item Price: {calculateItemPrice(item.menuItem, item.quantity).perItemPrice}
+                    </div>
+                    <div className="text-center my-auto p-2 mr-2">
+                      {item.quantity} *  {calculateItemPrice(item.menuItem, item.quantity).perItemPrice} = {calculateItemPrice(item.menuItem, item.quantity).totalItemPrice}
+                    </div>
                     <div
-                      className="text-center my-auto bg-red-500 text-white mx-2 py-2 cursor-pointer"
+                      className="text-center my-auto bg-red-500 text-white py-2 px-4 cursor-pointer"
                       onClick={() => handleDeleteItem(index)}
                     >
                       Delete
@@ -403,21 +436,20 @@ function CreateOrderForm() {
                 </div>
               ))}
             </div>
-
-
           </div>
           <div>
             <label
-              htmlFor="totalAmount"
+              htmlFor="amount"
               className="block font-semibold mb-1 text-gray-800"
             >
-              Total Amount
+              Amount
             </label>
             <input
               type="number"
-              id="totalAmount"
-              name="totalAmount"
-              value={formData.totalAmount}
+              id="amount"
+              name="amount"
+              disabled
+              value={calculateAmount()}
               onChange={handleChange}
               className="border border-gray-300 rounded-sm px-2 py-1 w-full focus:outline-none focus:border-blue-500"
               required

@@ -18,7 +18,6 @@ function Orders() {
       .finally(() => setIsLoading(false));
   }, []);
 
-
   const handleAddOrder = () => {
     navigate('add');
   };
@@ -28,7 +27,7 @@ function Orders() {
     // You can navigate to the invoice page passing the required data, e.g., orderId, etc.
     // Example: navigate(`/invoice/${rowData.orderId}`);
     console.log('View Invoice for Order:', rowData._id);
-    navigate(`invoice/${rowData._id}`)
+    navigate(`invoice/${rowData._id}`);
   };
 
   const viewInvoiceButtonTemplate = (rowData) => {
@@ -42,6 +41,10 @@ function Orders() {
     );
   };
 
+  const deliveryPartnerTemplate = (rowData) => {
+    return rowData.deliveryPartner?.name || 'Not Assigned';
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-full">
@@ -49,7 +52,6 @@ function Orders() {
       </div>
     );
   }
-
 
   return (
     <div>
@@ -60,16 +62,15 @@ function Orders() {
       >
         Add Order
       </button>
-      <DataTable  rowHover showGridlines size='small' value={orders}>
-        <Column field="user.name" header="Customer"></Column>
-        <Column field="restaurant.name" header="Restauarant"></Column>
-        <Column field="deliveryPartner?.name" header="Delivery Partner"></Column>
-        <Column field="paymentMethod" header="Payment Method"></Column>
-        <Column field="totalAmount" header="Total Amount"></Column>
-        <Column field="deliveryCharge" header="Delivery Charge"></Column>
-        <Column field="orderStatus" header="Order Status"></Column>
-        <Column body={viewInvoiceButtonTemplate} header="Actions"></Column>
-
+      <DataTable rowHover showGridlines size="small" value={orders}>
+        <Column field="user.name" header="Customer" />
+        <Column field="restaurant.name" header="Restaurant" />
+        <Column field="deliveryPartner?.name" header="Delivery Partner" body={deliveryPartnerTemplate} />
+        <Column field="paymentMethod" header="Payment Method" />
+        <Column field="totalAmount" header="Total Amount" />
+        <Column field="deliveryCharge" header="Delivery Charge" />
+        <Column field="orderStatus" header="Order Status" />
+        <Column body={viewInvoiceButtonTemplate} header="Actions" />
       </DataTable>
     </div>
   );

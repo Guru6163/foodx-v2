@@ -16,7 +16,7 @@ function CreateRestaurantForm() {
     const [creating, setCreating] = useState(false);
     const [updating, setUpdating] = useState(false);
     const [menuModalVisible, setMenuModalVisible] = useState(false);
-    const [ onChange,setOnChange] = useState(false)
+    const [onChange, setOnChange] = useState(false)
     const [formData, setFormData] = useState({
         name: '',
         address: '',
@@ -144,46 +144,13 @@ function CreateRestaurantForm() {
         }
     }, [id]);
 
-    if (loading) {
+    if (loading || updating || deleting || creating) {
         return (
-            <div className="bg-gray-100 flex items-center justify-center">
-                <div className="w-full bg-white shadow-lg rounded-sm px-8 py-6">
-                    <h2 className="text-lg font-bold mb-4">Loading...</h2>
-                </div>
+            <div className="flex justify-center items-center min-h-full">
+                <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500"></div>
             </div>
         );
     }
-
-    if (deleting) {
-        return (
-            <div className="bg-gray-100 flex items-center justify-center">
-                <div className="w-full bg-white shadow-lg rounded-sm px-8 py-6">
-                    <h2 className="text-lg font-bold mb-4">Deleting...</h2>
-                </div>
-            </div>
-        );
-    }
-
-    if (creating) {
-        return (
-            <div className="bg-gray-100 flex items-center justify-center">
-                <div className="w-full bg-white shadow-lg rounded-sm px-8 py-6">
-                    <h2 className="text-lg font-bold mb-4">Creating...</h2>
-                </div>
-            </div>
-        );
-    }
-
-    if (updating) {
-        return (
-            <div className="bg-gray-100 flex items-center justify-center">
-                <div className="w-full bg-white shadow-lg rounded-sm px-8 py-6">
-                    <h2 className="text-lg font-bold mb-4">Updating...</h2>
-                </div>
-            </div>
-        );
-    }
-
 
 
     return (
@@ -360,9 +327,9 @@ function CreateRestaurantForm() {
                     <Map onMarkerPositionChange={handleMarkerPositionChange} initialPosition={{ lat: parseFloat(formData.lat), lng: parseFloat(formData.lng) }} />
                 </div>
                 <div className="col-span-5">
-                {id && <MenuItemsTable setChange={setCreating}  change={onChange} id={id} />}
+                    {id && <MenuItemsTable setChange={setCreating} change={onChange} id={id} />}
                 </div>
-                
+
 
             </div>
         </div>

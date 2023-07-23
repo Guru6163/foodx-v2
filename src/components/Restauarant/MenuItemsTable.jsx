@@ -15,7 +15,7 @@ function MenuItemsTable({ id, change, setChange }) {
             <div>
                 <button
                     onClick={() => confirmDelete(rowData)}
-                    className="bg-red-600 px-5 py-2 text-white w-full"
+                    className="bg-red-600  py-1 text-white w-full"
                 >
                     Delete
                 </button>
@@ -25,13 +25,12 @@ function MenuItemsTable({ id, change, setChange }) {
 
     const confirmDelete = (rowData) => {
         setSelectedItem(rowData);
-
         setShowConfirmDialog(true);
 
     };
 
     const deleteMenuItem = () => {
-        
+        console.log(selectedItem._id)
         deleteMenuById(selectedItem._id).then(res => {
             console.log(res)
         }).catch(err => console.log(err))
@@ -46,7 +45,7 @@ function MenuItemsTable({ id, change, setChange }) {
 
     return (
         <div className="card">
-            <DataTable value={menuItems} showGridlines tableStyle={{ minWidth: '100vh' }}>
+            <DataTable size='small' value={menuItems} showGridlines tableStyle={{ minWidth: '100vh' }}>
                 <Column field="name" header="Name"></Column>
                 <Column field="category" header="Category"></Column>
                 <Column field="description" header="Description"></Column>
